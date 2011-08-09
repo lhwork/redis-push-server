@@ -77,6 +77,7 @@ if __name__ == '__main__':
     """
 
     #data = {"aps":{"alert":"Hello!"}}
-    push.publish(data)
+    for i in xrange(1, 10):
+        push.publish(data)
 
 
