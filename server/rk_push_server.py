@@ -14,7 +14,7 @@ import configs
 from redis.exceptions import ConnectionError
 
 #logging setting
-logging.basicConfig(filename='rk_push_server.log', level=logging.INFO)
+logging.basicConfig(filename='rk_push_server.log', level=logging.DEBUG)
 log = logging.getLogger('PushServer')
 
 class PushError(Exception):

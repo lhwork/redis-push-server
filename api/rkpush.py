@@ -38,20 +38,21 @@ class APNSNotification(object):
         return self._payload
 
 class Push(object):
-    def __init__(self):
+    def __init__(self, app_name=None):
         super(Push, self).__init__()
+        self._app_name = app_name
 
     def send_device_token(self, user_id=None, device_token=None):
         self._id = '%s:%s:%s' % ('user', 'id', user_id)
         try:
-            _redis_server.hset(PUSH_APP_NAME, self._id, device_token)
+            _redis_server.hset(self._app_name, self._id, device_token)
         except ConnectionError, e:
             print 'Error connecting to Redis server.', e
 
     def publish(self, data=None):
         if data:
             try:
-                return _redis_server.publish(PUSH_APP_NAME, json.dumps(data))
+                return _redis_server.publish(self._app_name, json.dumps(data))
             except ConnectionError, e:
                 print 'Error connecting to Redis server.', e
         else:
@@ -65,10 +66,17 @@ _redis_server = _init_redis_server()
 
 if __name__ == '__main__':
 
-    notification = APNSNotification(u'Hello! 测试!', 1, 'default')
-    data = notification.build()
+    mixi_notification = APNSNotification(u'mixi Hello! 测试!', 1, 'default')
+    mixi_data = mixi_notification.build()
 
-    push = Push()
+    mixi_push = Push('mixifarm')
+    mixi_push.publish(mixi_data)
+
+    kddi_notification = APNSNotification(u'kddi Hello! 测试!', 5, 'default')
+    kddi_data = kddi_notification.build()
+
+    kddi_push = Push('kddidom')
+    kddi_push.publish(kddi_data)
 
     """
     device_token = '18570a76 ec4378a0 f3088489 1296b22b 4cb02dd5 2e628211 005b6313 01e17339'
@@ -77,7 +85,8 @@ if __name__ == '__main__':
     """
 
     #data = {"aps":{"alert":"Hello!"}}
-    for i in xrange(1, 10):
-        push.publish(data)
+    #for i in xrange(1, 1):
+    #    mixi_push.publish(mixi_data)
+    #    kddi_push.publish(kddi_data)
 
 

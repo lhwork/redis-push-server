@@ -16,6 +16,6 @@ DEBUG = True
 REDIS_HOST = 'localhost'
 REDIS_PORT = 6379
 
-PUSH_APPS = {'mixifarm':'rekoo.pem'}
+PUSH_APPS = {'mixifarm':'rekoo.pem', 'kddidom':'rekoo.pem'}
 
 
